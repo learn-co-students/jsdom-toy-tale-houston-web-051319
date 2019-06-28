@@ -1,12 +1,25 @@
+//this is here so that variables are in scope for the other functions
 const addBtn = document.querySelector('#new-toy-btn')
 const toyForm = document.querySelector('.container')
 const toyURL = "http://localhost:3000/toys"
 let submitForm = document.querySelector('.add-toy-form')
 
+//loads this stuff first, no matter where script tag is in html
+document.addEventListener('DOMContentLoaded',function(){
 
+  //get toys
+  fetch(toyURL)
+  .then( (response) => { return response.json() } )
+  .then( (results) => {
+    //create cards
+    results.forEach(toycard)
+  })
+
+})
+
+// hide & seek with the form
 let addToy = false
 addBtn.addEventListener('click', () => {
-  // hide & seek with the form
   addToy = !addToy
   if (addToy) {
     toyForm.style.display = 'block'
@@ -15,7 +28,6 @@ addBtn.addEventListener('click', () => {
     toyForm.style.display = 'none'
   }
 })
-
 
 //function to add new toys
 function newToy(e){
@@ -48,14 +60,6 @@ function newToy(e){
 //easier to create elements
 let c = tagName => document.createElement(tagName)
 
-//get toys
-fetch(toyURL)
-  .then( function(response){ return response.json() } )
-  .then( function(results){
-    //create cards
-    results.forEach(toycard)
-  })
-
 //function to create toy cards
 function toycard(toy){
 
@@ -81,6 +85,7 @@ function toycard(toy){
   //make button increase like count
   button.addEventListener('click',() => likeButton(toy,p))
 
+  //create dislike button
   let button2 = c('button')
   button2.className ="like-btn"
   button2.innerText = "Dislike </3"
